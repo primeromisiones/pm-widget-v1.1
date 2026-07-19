@@ -3,78 +3,214 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Reloj Primero Misiones</title>
+
+<title>Primero Misiones - Reloj</title>
 
 <style>
-body{
-    margin:0;
-    background:transparent;
-    font-family:Arial,Helvetica,sans-serif;
-}
-
-.reloj{
-    width:100%;
-    max-width:380px;
-    margin:auto;
-    background:#c90000;
-    color:#fff;
-    text-align:center;
-    padding:18px 10px;
-    border-radius:15px;
+*{
     box-sizing:border-box;
 }
 
-.hora{
-    font-size:46px;
+body{
+    margin:0;
+    padding:0;
+    background:#d50000;
+    font-family:Arial, Helvetica, sans-serif;
+    color:white;
+    text-align:center;
+}
+
+.contenedor{
+    width:100%;
+    max-width:390px;
+    margin:auto;
+    padding:20px 15px;
+}
+
+.logo{
+    font-size:22px;
     font-weight:bold;
+    margin-bottom:10px;
+}
+
+.titulo{
+    font-size:14px;
+    margin-bottom:15px;
+    opacity:.9;
+}
+
+.hora{
+    font-size:65px;
+    font-weight:bold;
+    line-height:1;
     letter-spacing:2px;
 }
 
 .fecha{
+    font-size:20px;
+    margin-top:10px;
+}
+
+.clima{
+    margin-top:18px;
+    padding:12px;
+    border-radius:12px;
+    background:rgba(255,255,255,0.15);
+    font-size:20px;
+    font-weight:bold;
+}
+
+.estado{
+    font-size:14px;
     margin-top:8px;
-    font-size:17px;
-    text-transform:capitalize;
+}
+
+@media(max-width:400px){
+
+.hora{
+    font-size:55px;
+}
+
+.fecha{
+    font-size:18px;
+}
+
 }
 </style>
+
 </head>
 
 <body>
 
-<div class="reloj">
-    <div class="hora" id="hora">00:00:00</div>
-    <div class="fecha" id="fecha">Cargando fecha...</div>
+<div class="contenedor">
+
+<div class="logo">
+🔴 PRIMERO MISIONES
 </div>
+
+<div class="titulo">
+Información en vivo de San Javier
+</div>
+
+<div class="hora" id="hora">
+--:--
+</div>
+
+<div class="fecha" id="fecha">
+Cargando fecha...
+</div>
+
+
+<div class="clima">
+🌡️ <span id="temperatura">--</span> °C
+</div>
+
+<div class="estado" id="estado">
+Cargando clima...
+</div>
+
+</div>
+
 
 <script>
 
-function actualizar(){
+function actualizarHora(){
 
-    const ahora = new Date();
+let ahora = new Date();
 
-    const hora =
-        String(ahora.getHours()).padStart(2,"0") + ":" +
-        String(ahora.getMinutes()).padStart(2,"0") + ":" +
-        String(ahora.getSeconds()).padStart(2,"0");
+let hora = ahora.toLocaleTimeString("es-AR",{
+hour:"2-digit",
+minute:"2-digit",
+second:"2-digit",
+hour12:false
+});
 
-    document.getElementById("hora").textContent = hora;
+let fecha = ahora.toLocaleDateString("es-AR",{
+weekday:"long",
+day:"2-digit",
+month:"long",
+year:"numeric"
+});
 
-    let fecha = ahora.toLocaleDateString("es-AR",{
-        weekday:"long",
-        day:"numeric",
-        month:"long",
-        year:"numeric"
-    });
 
-    fecha = fecha.charAt(0).toUpperCase() + fecha.slice(1);
+document.getElementById("hora").textContent = hora;
 
-    document.getElementById("fecha").textContent = fecha;
+document.getElementById("fecha").textContent =
+fecha.charAt(0).toUpperCase()+fecha.slice(1);
 
 }
 
-actualizar();
-setInterval(actualizar,1000);
+
+setInterval(actualizarHora,1000);
+actualizarHora();
+
+
+
+const LAT = -27.873;
+const LON = -55.137;
+
+
+async function cargarClima(){
+
+try{
+
+let respuesta = await fetch(
+`https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current=temperature_2m,weather_code&timezone=America%2FArgentina%2FBuenos_Aires`
+);
+
+
+let datos = await respuesta.json();
+
+
+document.getElementById("temperatura").textContent =
+Math.round(datos.current.temperature_2m);
+
+
+let codigo = datos.current.weather_code;
+
+
+let descripcion="";
+
+if(codigo===0){
+descripcion="Cielo despejado";
+}
+else if(codigo<=3){
+descripcion="Parcialmente nublado";
+}
+else if(codigo<=67){
+descripcion="Lluvias";
+}
+else if(codigo<=77){
+descripcion="Nieve";
+}
+else if(codigo<=82){
+descripcion="Chaparrones";
+}
+else{
+descripcion="Tormentas";
+}
+
+
+document.getElementById("estado").textContent=descripcion;
+
+
+}catch(error){
+
+document.getElementById("estado").textContent=
+"No disponible";
+
+}
+
+}
+
+
+cargarClima();
+
+setInterval(cargarClima,600000);
+
 
 </script>
+
 
 </body>
 </html>
