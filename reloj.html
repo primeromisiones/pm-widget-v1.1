@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Reloj Primero Misiones</title>
+
+<style>
+body{
+margin:0;
+background:transparent;
+font-family:Arial,Helvetica,sans-serif;
+}
+
+.reloj{
+width:100%;
+max-width:380px;
+margin:auto;
+background:#c90000;
+color:white;
+text-align:center;
+padding:18px 10px;
+border-radius:15px;
+box-sizing:border-box;
+}
+
+.hora{
+font-size:46px;
+font-weight:bold;
+}
+
+.fecha{
+margin-top:8px;
+font-size:17px;
+text-transform:capitalize;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="reloj">
+
+<div class="hora" id="hora">
+00:00:00
+</div>
+
+<div class="fecha" id="fecha">
+Cargando fecha...
+</div>
+
+</div>
+
+
+<script>
+
+function actualizar(){
+
+let ahora = new Date();
+
+document.getElementById("hora").innerHTML =
+ahora.toLocaleTimeString("es-AR");
+
+
+document.getElementById("fecha").innerHTML =
+ahora.toLocaleDateString("es-AR",{
+weekday:"long",
+day:"numeric",
+month:"long",
+year:"numeric"
+});
+
+}
+
+actualizar();
+
+setInterval(actualizar,1000);
+
+</script>
+
+
+</body>
+</html>
