@@ -51,13 +51,12 @@ function actualizar(){
 
     const ahora = new Date();
 
-    document.getElementById("hora").textContent =
-        ahora.toLocaleTimeString("es-AR",{
-            hour:"2-digit",
-            minute:"2-digit",
-            second:"2-digit",
-            hour12:false
-        });
+    const hora =
+        String(ahora.getHours()).padStart(2,"0") + ":" +
+        String(ahora.getMinutes()).padStart(2,"0") + ":" +
+        String(ahora.getSeconds()).padStart(2,"0");
+
+    document.getElementById("hora").textContent = hora;
 
     let fecha = ahora.toLocaleDateString("es-AR",{
         weekday:"long",
