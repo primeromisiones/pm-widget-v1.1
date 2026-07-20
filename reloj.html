@@ -4,245 +4,234 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Primero Misiones - Reloj</title>
+<title>Primero Misiones | Reloj</title>
 
 <style>
-
 *{
+    margin:0;
+    padding:0;
     box-sizing:border-box;
 }
 
 html,body{
-    margin:0;
-    padding:0;
     width:100%;
+    height:100%;
+    background:#000;
+    font-family:Arial,Helvetica,sans-serif;
     overflow:hidden;
 }
 
 body{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+#pm-widget{
+    width:100%;
+    max-width:420px;
+    background:#000;
+    color:#fff;
+    border-radius:18px;
+    overflow:hidden;
+    border:1px solid #202020;
+    box-shadow:0 8px 30px rgba(0,0,0,.45);
+}
+
+.topbar{
     background:#d50000;
-    font-family:Arial, Helvetica, sans-serif;
-    color:white;
+    color:#fff;
+    text-align:center;
+    font-weight:700;
+    font-size:15px;
+    padding:10px 8px;
+    letter-spacing:.5px;
+}
+
+.logo{
+    background:#000;
+    text-align:center;
+    padding:18px 10px 10px;
+}
+
+.logo img{
+    width:220px;
+    max-width:90%;
+    height:auto;
+}
+
+.reloj{
+    text-align:center;
+    padding:6px 15px 0;
+}
+
+#hora{
+    font-size:64px;
+    font-weight:700;
+    line-height:1;
+    letter-spacing:2px;
+}
+
+#fecha{
+    margin-top:10px;
+    color:#d0d0d0;
+    font-size:18px;
+}
+
+.temp-card{
+    margin:22px 18px 20px;
+    background:#111;
+    border:1px solid #2b2b2b;
+    border-radius:14px;
+    padding:18px;
     text-align:center;
 }
 
-.contenedor{
-    width:100%;
-    max-width:390px;
-    margin:auto;
-    padding:18px 10px;
-}
-
-.logo{
-    font-size:22px;
-    font-weight:bold;
+.temp-title{
+    font-size:14px;
+    color:#bbbbbb;
     margin-bottom:8px;
-}
-
-.titulo{
-    font-size:14px;
-    margin-bottom:12px;
-}
-
-.hora{
-    font-size:clamp(38px,15vw,65px);
-    font-weight:bold;
-    line-height:1;
+    text-transform:uppercase;
     letter-spacing:1px;
-    white-space:nowrap;
 }
 
-.fecha{
-    font-size:18px;
-    margin-top:10px;
-    line-height:1.3;
-    white-space:normal;
-}
-
-.clima{
-    margin-top:16px;
-    padding:10px;
-    border-radius:12px;
-    background:rgba(255,255,255,0.15);
-    font-size:20px;
+#temperatura{
+    font-size:36px;
     font-weight:bold;
 }
 
-.estado{
-    font-size:14px;
-    margin-top:8px;
+#descripcion{
+    margin-top:6px;
+    color:#bbbbbb;
+    font-size:15px;
 }
 
+@media (max-width:420px){
 
-@media(max-width:350px){
+    #hora{
+        font-size:56px;
+    }
 
-.logo{
-    font-size:19px;
+    #fecha{
+        font-size:17px;
+    }
+
+    .logo img{
+        width:190px;
+    }
+
+    .temp-card{
+        margin:18px 14px;
+    }
+
 }
-
-.hora{
-    font-size:38px;
-}
-
-.fecha{
-    font-size:16px;
-}
-
-.clima{
-    font-size:18px;
-}
-
-}
-
 </style>
-
 </head>
 
 <body>
 
-<div class="contenedor">
+<div id="pm-widget">
 
-<div class="logo">
-🔴 PRIMERO MISIONES
-</div>
+    <div class="topbar">
+        🔴 PRIMERO MISIONES | EN VIVO
+    </div>
 
-<div class="titulo">
-Información en vivo de San Javier
-</div>
+    <div class="logo">
+        <img src="https://primeromisiones.info/static/custom/logo.webp?t=2026-07-15+03%3A00%3A30.213467" alt="Primero Misiones">
+    </div>
 
+    <div class="reloj">
+        <div id="hora">00:00</div>
+        <div id="fecha">Cargando fecha...</div>
+    </div>
 
-<div class="hora" id="hora">
---:--
-</div>
-
-
-<div class="fecha" id="fecha">
-Cargando fecha...
-</div>
-
-
-<div class="clima">
-🌡️ <span id="temperatura">--</span> °C
-</div>
-
-
-<div class="estado" id="estado">
-Cargando clima...
-</div>
-
+    <div class="temp-card">
+        <div class="temp-title">San Javier · Misiones</div>
+        <div id="temperatura">--°C</div>
+        <div id="descripcion">Actualizando...</div>
+    </div>
 
 </div>
-
-
 
 <script>
+const LAT=-27.873;
+const LON=-55.137;
 
-function actualizarHora(){
+function actualizarReloj(){
 
-let ahora = new Date();
+    const ahora=new Date();
 
-let hora = ahora.toLocaleTimeString("es-AR",{
-hour:"2-digit",
-minute:"2-digit",
-second:"2-digit",
-hour12:false
-});
+    document.getElementById("hora").textContent=
+        ahora.toLocaleTimeString("es-AR",{
+            hour:"2-digit",
+            minute:"2-digit"
+        });
 
-
-let fecha = ahora.toLocaleDateString("es-AR",{
-weekday:"long",
-day:"2-digit",
-month:"long",
-year:"numeric"
-});
-
-
-document.getElementById("hora").textContent = hora;
-
-document.getElementById("fecha").textContent =
-fecha.charAt(0).toUpperCase()+fecha.slice(1);
+    document.getElementById("fecha").textContent=
+        ahora.toLocaleDateString("es-AR",{
+            weekday:"long",
+            day:"numeric",
+            month:"long",
+            year:"numeric"
+        });
 
 }
 
+actualizarReloj();
+setInterval(actualizarReloj,1000);
 
-actualizarHora();
+function descripcionTiempo(code){
 
-setInterval(actualizarHora,1000);
+    const estados={
+        0:"Despejado",
+        1:"Mayormente despejado",
+        2:"Parcialmente nublado",
+        3:"Nublado",
+        45:"Niebla",
+        48:"Niebla",
+        51:"Llovizna",
+        53:"Llovizna",
+        55:"Llovizna",
+        61:"Lluvia",
+        63:"Lluvia",
+        65:"Lluvia intensa",
+        71:"Nevadas",
+        80:"Chaparrones",
+        81:"Chaparrones",
+        82:"Chaparrones fuertes",
+        95:"Tormentas"
+    };
 
+    return estados[code] || "Sin datos";
+}
 
+async function cargarTemperatura(){
 
-const LAT = -27.873;
-const LON = -55.137;
+    try{
 
+        const url=`https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current=temperature_2m,weather_code`;
 
-async function cargarClima(){
+        const r=await fetch(url);
+        const d=await r.json();
 
-try{
+        document.getElementById("temperatura").textContent=
+            Math.round(d.current.temperature_2m)+"°C";
 
+        document.getElementById("descripcion").textContent=
+            descripcionTiempo(d.current.weather_code);
 
-let respuesta = await fetch(
-`https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current=temperature_2m,weather_code&timezone=America%2FArgentina%2FBuenos_Aires`
-);
+    }catch(e){
 
+        document.getElementById("temperatura").textContent="--°C";
+        document.getElementById("descripcion").textContent="Sin conexión";
 
-let datos = await respuesta.json();
-
-
-document.getElementById("temperatura").textContent =
-Math.round(datos.current.temperature_2m);
-
-
-
-let codigo = datos.current.weather_code;
-
-let descripcion="";
-
-
-if(codigo===0){
-
-descripcion="Cielo despejado";
-
-}else if(codigo<=3){
-
-descripcion="Parcialmente nublado";
-
-}else if(codigo<=67){
-
-descripcion="Lluvias";
-
-}else if(codigo<=82){
-
-descripcion="Chaparrones";
-
-}else{
-
-descripcion="Tormentas";
+    }
 
 }
 
-
-document.getElementById("estado").textContent=descripcion;
-
-
-
-}catch(error){
-
-document.getElementById("estado").textContent=
-"Clima no disponible";
-
-}
-
-
-}
-
-
-cargarClima();
-
-setInterval(cargarClima,600000);
-
-
+cargarTemperatura();
+setInterval(cargarTemperatura,600000);
 </script>
-
 
 </body>
 </html>
