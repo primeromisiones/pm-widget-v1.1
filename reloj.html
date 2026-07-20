@@ -15,105 +15,185 @@
 
 html,body{
     width:100%;
-    height:100%;
-    background:#000;
+    min-height:100%;
+    background:transparent;
     font-family:Arial,Helvetica,sans-serif;
-    overflow:hidden;
 }
 
 body{
     display:flex;
     justify-content:center;
     align-items:center;
+    padding:10px;
 }
 
 #pm-widget{
     width:100%;
-    max-width:420px;
-    background:#000;
+    max-width:540px;
+    background:#050505;
     color:#fff;
-    border-radius:18px;
+    border-radius:22px;
     overflow:hidden;
-    border:1px solid #202020;
-    box-shadow:0 8px 30px rgba(0,0,0,.45);
+    border:3px solid #1479ff;
+    box-shadow:
+        0 0 20px rgba(20,121,255,.45),
+        0 10px 35px rgba(0,0,0,.65);
 }
+
+/* FRANJA SUPERIOR */
 
 .topbar{
     background:#d50000;
     color:#fff;
     text-align:center;
-    font-weight:700;
+    font-weight:800;
     font-size:15px;
-    padding:10px 8px;
-    letter-spacing:.5px;
+    padding:11px 8px;
+    letter-spacing:.7px;
 }
 
+/* LOGO */
+
 .logo{
-    background:#000;
     text-align:center;
-    padding:18px 10px 10px;
+    padding:18px 10px 8px;
+    background:#000;
 }
 
 .logo img{
-    width:220px;
+    width:230px;
     max-width:90%;
     height:auto;
 }
 
+/* RELOJ */
+
 .reloj{
     text-align:center;
-    padding:6px 15px 0;
+    padding:8px 10px;
 }
 
 #hora{
-    font-size:64px;
-    font-weight:700;
+    font-size:70px;
+    font-weight:800;
     line-height:1;
-    letter-spacing:2px;
+    letter-spacing:3px;
 }
 
 #fecha{
-    margin-top:10px;
-    color:#d0d0d0;
+    margin-top:12px;
+    color:#d8d8d8;
     font-size:18px;
+    text-transform:capitalize;
 }
 
+
+/* TEMPERATURA */
+
 .temp-card{
-    margin:22px 18px 20px;
-    background:#111;
-    border:1px solid #2b2b2b;
-    border-radius:14px;
-    padding:18px;
+    margin:20px;
+    padding:20px;
+    border-radius:18px;
+    background:linear-gradient(145deg,#111,#070707);
+    border:1px solid #333;
     text-align:center;
 }
 
 .temp-title{
+    color:#aaa;
     font-size:14px;
-    color:#bbbbbb;
-    margin-bottom:8px;
     text-transform:uppercase;
     letter-spacing:1px;
+    margin-bottom:8px;
 }
 
 #temperatura{
-    font-size:36px;
-    font-weight:bold;
+    font-size:42px;
+    font-weight:800;
 }
 
 #descripcion{
     margin-top:6px;
-    color:#bbbbbb;
-    font-size:15px;
+    font-size:16px;
+    color:#ccc;
 }
 
-@media (max-width:420px){
+
+/* MENSAJE ANIMADO */
+
+.mensaje{
+    width:100%;
+    overflow:hidden;
+    white-space:nowrap;
+    margin-top:5px;
+    padding:8px 0;
+    background:#090909;
+    border-top:1px solid #222;
+    border-bottom:1px solid #222;
+}
+
+.mensaje span{
+    display:inline-block;
+    padding-left:100%;
+    animation:deslizar 12s linear infinite;
+    color:#fff;
+    font-size:15px;
+    font-weight:bold;
+}
+
+@keyframes deslizar{
+
+    from{
+        transform:translateX(0);
+    }
+
+    to{
+        transform:translateX(-100%);
+    }
+
+}
+
+
+/* BOTON */
+
+.boton{
+    text-align:center;
+    padding:15px;
+}
+
+.boton a{
+    display:inline-block;
+    background:#0aa84f;
+    color:white;
+    text-decoration:none;
+    font-weight:bold;
+    padding:12px 28px;
+    border-radius:30px;
+    font-size:15px;
+    box-shadow:0 4px 12px rgba(0,0,0,.4);
+}
+
+
+/* PIE */
+
+.pie{
+    text-align:center;
+    padding:12px;
+    background:#080808;
+    color:#aaa;
+    font-size:14px;
+    letter-spacing:1px;
+}
+
+
+@media(max-width:420px){
 
     #hora{
         font-size:56px;
     }
 
     #fecha{
-        font-size:17px;
+        font-size:16px;
     }
 
     .logo img{
@@ -121,12 +201,14 @@ body{
     }
 
     .temp-card{
-        margin:18px 14px;
+        margin:15px;
     }
 
 }
+
 </style>
 </head>
+
 
 <body>
 
@@ -136,102 +218,170 @@ body{
         🔴 PRIMERO MISIONES | EN VIVO
     </div>
 
+
     <div class="logo">
         <img src="https://primeromisiones.info/static/custom/logo.webp?t=2026-07-15+03%3A00%3A30.213467" alt="Primero Misiones">
     </div>
 
+
     <div class="reloj">
-        <div id="hora">00:00</div>
-        <div id="fecha">Cargando fecha...</div>
+
+        <div id="hora">
+            00:00
+        </div>
+
+        <div id="fecha">
+            Cargando fecha...
+        </div>
+
     </div>
 
+
     <div class="temp-card">
-        <div class="temp-title">San Javier · Misiones</div>
-        <div id="temperatura">--°C</div>
-        <div id="descripcion">Actualizando...</div>
+
+        <div class="temp-title">
+            San Javier · Misiones
+        </div>
+
+        <div id="temperatura">
+            --°C
+        </div>
+
+        <div id="descripcion">
+            Actualizando...
+        </div>
+
     </div>
+
+
+    <div class="mensaje">
+        <span>
+            💙 Gracias por elegir Primero Misiones
+        </span>
+    </div>
+
+
+    <div class="boton">
+
+        <a href="https://wa.me/543754405031" target="_blank">
+            📲 ENVIAR NOTICIA
+        </a>
+
+    </div>
+
+
+    <div class="pie">
+        Siempre Primero.
+    </div>
+
 
 </div>
 
+
+
 <script>
+
 const LAT=-27.873;
 const LON=-55.137;
+
 
 function actualizarReloj(){
 
     const ahora=new Date();
 
-    document.getElementById("hora").textContent=
-        ahora.toLocaleTimeString("es-AR",{
-            hour:"2-digit",
-            minute:"2-digit"
-        });
+    document.getElementById("hora").textContent =
+    ahora.toLocaleTimeString("es-AR",{
+        hour:"2-digit",
+        minute:"2-digit"
+    });
 
-    document.getElementById("fecha").textContent=
-        ahora.toLocaleDateString("es-AR",{
-            weekday:"long",
-            day:"numeric",
-            month:"long",
-            year:"numeric"
-        });
+
+    document.getElementById("fecha").textContent =
+    ahora.toLocaleDateString("es-AR",{
+        weekday:"long",
+        day:"numeric",
+        month:"long",
+        year:"numeric"
+    });
 
 }
 
+
 actualizarReloj();
+
 setInterval(actualizarReloj,1000);
+
+
 
 function descripcionTiempo(code){
 
-    const estados={
-        0:"Despejado",
-        1:"Mayormente despejado",
-        2:"Parcialmente nublado",
-        3:"Nublado",
-        45:"Niebla",
-        48:"Niebla",
-        51:"Llovizna",
-        53:"Llovizna",
-        55:"Llovizna",
-        61:"Lluvia",
-        63:"Lluvia",
-        65:"Lluvia intensa",
-        71:"Nevadas",
-        80:"Chaparrones",
-        81:"Chaparrones",
-        82:"Chaparrones fuertes",
-        95:"Tormentas"
-    };
+const estados={
 
-    return estados[code] || "Sin datos";
+0:"Despejado",
+1:"Mayormente despejado",
+2:"Parcialmente nublado",
+3:"Nublado",
+45:"Niebla",
+48:"Niebla",
+51:"Llovizna",
+53:"Llovizna",
+55:"Llovizna",
+61:"Lluvia",
+63:"Lluvia",
+65:"Lluvia intensa",
+71:"Nevadas",
+80:"Chaparrones",
+81:"Chaparrones",
+82:"Chaparrones fuertes",
+95:"Tormentas"
+
+};
+
+return estados[code] || "Sin datos";
+
 }
+
+
 
 async function cargarTemperatura(){
 
-    try{
+try{
 
-        const url=`https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current=temperature_2m,weather_code`;
+const url=
+`https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current=temperature_2m,weather_code`;
 
-        const r=await fetch(url);
-        const d=await r.json();
 
-        document.getElementById("temperatura").textContent=
-            Math.round(d.current.temperature_2m)+"°C";
+const r=await fetch(url);
 
-        document.getElementById("descripcion").textContent=
-            descripcionTiempo(d.current.weather_code);
+const d=await r.json();
 
-    }catch(e){
 
-        document.getElementById("temperatura").textContent="--°C";
-        document.getElementById("descripcion").textContent="Sin conexión";
+document.getElementById("temperatura").textContent =
+Math.round(d.current.temperature_2m)+"°C";
 
-    }
+
+document.getElementById("descripcion").textContent =
+descripcionTiempo(d.current.weather_code);
+
+
+}catch(e){
+
+document.getElementById("temperatura").textContent="--°C";
+
+document.getElementById("descripcion").textContent="Sin conexión";
 
 }
 
+}
+
+
 cargarTemperatura();
+
 setInterval(cargarTemperatura,600000);
+
+
 </script>
+
 
 </body>
 </html>
